@@ -26,6 +26,7 @@ public class FPSController : MonoBehaviour
     #endregion
     //Variables de referencia privadas
     Rigidbody rb;
+    Animator anim;
 
     //Variables para el input
     Vector2 moveInput;
@@ -35,6 +36,7 @@ public class FPSController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
     void Start()
     {
@@ -115,7 +117,7 @@ public class FPSController : MonoBehaviour
         if (context.performed)
         { 
             isCrouching = !isCrouching;
-            //Animacion de agacharse
+            anim.SetBool("isCrouching", isCrouching);
         }
     }
 
