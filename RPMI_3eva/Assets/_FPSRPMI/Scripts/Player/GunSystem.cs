@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,7 +41,24 @@ public class GunSystem : MonoBehaviour
 
     void Update()
     {
-        
+        //Condicion estricta de llamar a la rutina de disparo
+        if (canShoot && shooting && !reloading && bulletsLeft > 0) StartCoroutine(ShootRoutine());
+    }
+
+    IEnumerator ShootRoutine()
+    {
+        //Corrutina que se encarga de medir el tiempo entre disparos y la gestion del gasto de balas, llama al raycast de disparo
+        canShoot = false;
+        if (!allowButtonHold) shooting = false; //Cerrar el bucle de disparo por pulsacion
+        for (int i = 0; i < bulletsPerTap; i++)
+        {
+            if (bulletsLeft <= 0) break; //break anula el bucle
+            Shoot();
+            bulletsLeft--; //resta 1 a la cantidad de balas actual
+        }
+
+        yield return new WaitForSeconds(shootingCooldown);
+        canShoot = true;
     }
 
     void Shoot()
@@ -57,16 +75,37 @@ public class GunSystem : MonoBehaviour
         }
     }
 
+    void Reload()
+    {
+        if (bulletsLeft < ammoSize && !reloading) StartCoroutine(ReloadRoutine());
+    }
+
+    IEnumerator ReloadRoutine()
+    {
+        reloading = true;
+        //Animacion
+        yield return new WaitForSeconds(reloadTime);
+        bulletsLeft = ammoSize; //Cantidad de balas actuales se iguala a la cantidad de balas maxima
+        reloading = false;
+    }
+
     #region Input methods
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-
+        if (allowButtonHold)
+        {
+            shooting = context.ReadValueAsButton(); //Detecta constantemente si el boton de disparo esya apretado
+        }
+        else
+        {
+            if (context.performed) shooting = true; //shooting solo es verdadero por pulsacion
+        }
     }
 
     public void OnReload(InputAction.CallbackContext context)
     {
-
+        if (context.performed) Reload();
     }
 
     #endregion
