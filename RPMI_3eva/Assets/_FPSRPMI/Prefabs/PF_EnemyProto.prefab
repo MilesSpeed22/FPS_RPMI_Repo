@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558e6a1ea1b31304ab7de25a0728cdc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIBase
-  agent: {fileID: 0}
-  target: {fileID: 0}
+  agent: {fileID: 627996398736003481}
+  target: {fileID: 8992203797720686482, guid: 364c425c78bad344ca4178421c1b09ed, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -180,6 +180,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   walkPointRange: 10
+  useWaypoints: 0
+  waypoints: []
   timeBetweenAttacks: 1
   projectile: {fileID: 2092250463052348148, guid: 864135e77f193c044bdd654a6d08cd19, type: 3}
   shootPoint: {fileID: 8484569490972364767}
